@@ -1,21 +1,20 @@
-//
-// Created by lunde on 2020/11/1.
-//
-
-
-#include "myLog.h"
+#include "mylog.h"
 #include "evenement.h"
 
-using namespace TIME;
-
-void MyLog::addEvt(const Date& d, const Horaire& h,const string& s)
-{
-
-    // Seems that the code is problematic. But the general idea should be OK.
-    Agenda::operator<<(Evt1jDur(d, s, h, Duree(0)));
+// 1 : Adaptateur de classe
+/**/
+void MyLog::addEvt(const TIME::Date& d, const TIME::Horaire& h,const string& s){
+    *this << TIME::Evt1jDur(d,s,h,TIME::Duree(0));
 }
-void MyLog::displayLog(std::ostream& f) const
-{
-    for(Agenda::iterator it=Agenda::begin(); it!=Agenda::end(); ++it)
-        f<<(*it).getDate()<<" - "<<dynamic_cast<const Evt1jDur&>(*it).getHoraire()<<":"<<(*it).getDescription()<<"\n";
+
+// dynamic_cast : pour downcaster de Evt a une sous-classe
+void MyLog::displayLog(std::ostream& f) const {
+    for(TIME::Agenda::const_iterator it=cbegin(); it!=cend(); it++) {
+        f << dynamic_cast<const TIME::Evt1j&>(*it).getDate() << " - "
+          << dynamic_cast<const TIME::Evt1jDur&>(*it).getHoraire() << ":"
+          << (*it).getDescription() << "\n";
+    }
 }
+/**/
+
+
